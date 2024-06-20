@@ -21,6 +21,7 @@ try {
 
 	let xp = 0;
 	for (let i = 0; i < process.env.LESSONS; i++) {
+		const coeff = Math.round(Math.random() * 8 + 6);
 		const session = await fetch(
 			"https://www.duolingo.com/2017-06-30/sessions",
 			{
@@ -98,24 +99,26 @@ try {
 		).then((response) => response.json());
 
 		const response = await fetch(
-			`https://www.duolingo.com/2017-06-30/sessions/${session.id}`,
-			{
-				body: JSON.stringify({
-					...session,
-					heartsLeft: 0,
-					startTime: (+new Date() - 60000) / 1000,
-					enableBonusPoints: false,
-					endTime: +new Date() / 1000,
-					failed: false,
-					maxInLessonStreak: 9,
-					shouldLearnThings: true,
-				}),
-				headers,
-				method: "PUT",
-			},
-		).then((response) => response.json());
+      `https://www.duolingo.com/2017-06-30/sessions/${session.id}`,
+      {
+        body: JSON.stringify({
+          ...session,
+          heartsLeft: 0,
+          startTime: (+new Date() - 60000) / 1000,
+          enableBonusPoints: true,
+          endTime: +new Date() / 1000,
+          failed: false,
+          maxInLessonStreak: coeff,
+          shouldLearnThings: true,
+        }),
+        headers,
+        method: "PUT",
+      }
+    ).then((response) => response.json());
 
 		xp += response.xpGain;
+		console.log(response.xpGain);
+		console.log("coeff: ", coeff)
 	}
 
 	console.log(`🎉 You won ${xp} XP`);
