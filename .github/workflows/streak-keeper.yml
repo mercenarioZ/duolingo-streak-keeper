@@ -6,7 +6,7 @@ on:
       - main
   workflow_dispatch:
   schedule:
-    - cron: '0 5 * * *'
+    - cron: '0 0 * * *'
 
 jobs:
   gain_xp:
@@ -21,4 +21,4 @@ jobs:
       - run: node index.js
         env:
           DUOLINGO_JWT: ${{ secrets.DUOLINGO_JWT }}
-          LESSONS: 1
+          LESSONS: 3
